@@ -4,6 +4,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 $app = require_once __DIR__.'/bootstrap.php';
 
+/**
+ *
+ */
 $app->get('/', function() use ($app) {
   $query = $app['query_builder']->limit(20)->getQuery();
 
@@ -14,6 +17,40 @@ $app->get('/', function() use ($app) {
   ));
 })->bind('homepage');
 
+/**
+ *
+ */
+$app->get('/new', function() use ($app) {
+  $form = $app['form']();
+
+  return $app['twig']->render('new.twig', array(
+    'form' => $form->createView(),
+  ));
+})->bind('new');
+
+/**
+ *
+ */
+$app->post('/create', function() use ($app) {
+  $form = $app['form'](new $app['culin.entity']());
+
+  $form->bindRequest($app['request']);
+
+  if ($form->isValid()) {
+    $app['doctrine.odm.mongodb.dm']->persist($form->getData());
+    $app['doctrine.odm.mongodb.dm']->flush();
+
+    return new RedirectResponse($app['url_generator']->generate('edit', array('id' => $form->getData()->id)));
+  }
+
+  return $app['twig']->render('new.twig', array(
+    'form' => $form->createView(),
+  ));
+})->bind('create');
+
+/**
+ *
+ */
 $app->get('/edit/{id}', function($id) use ($app) {
   $entity = $app['repository']->find($id);
   $form   = $app['form']($entity);
@@ -24,6 +61,9 @@ $app->get('/edit/{id}', function($id) use ($app) {
   ));
 })->bind('edit');
 
+/**
+ *
+ */
 $app->post('/update', function() use ($app) {
   $form   = $app['form']();
   $data   = $app['request']->get($form->getName());
@@ -34,7 +74,6 @@ $app->post('/update', function() use ($app) {
 
   if ($form->isValid()) {
     $app['doctrine.odm.mongodb.dm']->persist($form->getData());
-    $app['doctrine.odm.mongodb.dm']->flush();
 
     return new RedirectResponse($app['url_generator']->generate('edit', array('id' => $form->getData()->id)));
   }
@@ -45,10 +84,12 @@ $app->post('/update', function() use ($app) {
   ));
 })->bind('update');
 
+/**
+ *
+ */
 $app->get('/delete/{id}', function($id) use ($app) {
   $entity = $app['repository']->find($id);
   $app['doctrine.odm.mongodb.dm']->remove($entity);
-  $app['doctrine.odm.mongodb.dm']->flush();
 
   return new RedirectResponse($app['url_generator']->generate('homepage'));
 })->bind('delete');

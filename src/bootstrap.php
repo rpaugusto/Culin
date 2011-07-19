@@ -83,4 +83,8 @@ $app->before(function() use ($app) {
   $app['twig']->enableDebug();
 });
 
+$app->after(function() use ($app) {
+  $app['doctrine.odm.mongodb.dm']->flush();
+});
+
 return $app;
