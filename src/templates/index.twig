@@ -1,0 +1,18 @@
+<table border="1">
+  <thead>
+  </thead>
+    <tr>
+      {% for field in entities|to_headers %}
+      <th>{{ field }}</th>
+      {% endfor %}
+    </tr>
+  <tbody>
+  {% for entity in entities %}
+  <tr>
+    {% for field in entity|to_array %}
+    <td>{{ field }}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>

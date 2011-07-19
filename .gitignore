@@ -1,1 +1,3 @@
 src/config.php
+src/Document/*
+src/Form/*

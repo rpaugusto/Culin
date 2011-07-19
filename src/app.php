@@ -2,14 +2,14 @@
 
 $app = require_once __DIR__.'/bootstrap.php';
 
-$app->before(function() use ($app) {
-  if (!isset($app['crud.entity'])) {
-    throw new \RuntimeException('Configuration entry "crud.entity" is not set');
-  }
-});
+$app->get('/', function() use ($app) {
+  $query = $app['query_builder']->limit(20)->getQuery();
 
-$app->get('/', function() {
-  return 'hello, world';
+  $entities = $query->execute();
+
+  return $app['twig']->render('index.twig', array(
+    'entities' => $entities,
+  ));
 });
 
 return $app;
