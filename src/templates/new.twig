@@ -1,5 +1,9 @@
+{% extends "layout.twig" %}
+
+{% block content %}
 <form method="post" action="{{ path('create') }}">
   {{ form_widget(form) }}
 
   <button>{{ "save"|trans }}</button>
 </form>
+{% endblock %}

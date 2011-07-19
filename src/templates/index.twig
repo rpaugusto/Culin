@@ -1,5 +1,6 @@
-<a href="{{ path('new') }}">{{ "create new"|trans }}</a>
+{% extends "layout.twig" %}
 
+{% block content %}
 <table border="1">
   <thead>
   </thead>
@@ -24,3 +25,4 @@
   {% endfor %}
   </tbody>
 </table>
+{% endblock %}
