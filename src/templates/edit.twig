@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('update') }}">
+  {{ form_widget(form) }}
+
+  <button>{{ "save"|trans }}</button> | <a href="{{ path('delete', { "id": entity.id }) }}">{{ "delete"|trans }}</a>
+</form>

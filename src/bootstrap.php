@@ -66,9 +66,16 @@ $app->before(function() use ($app) {
     throw new \RuntimeException('Configuration entry "culin.entity" is not set');
   }
 
-  $app['repository']    = $app['doctrine.odm.mongodb.dm']->getRepository($app['culin.entity']);
-  $app['query_builder'] = $app->share(function() use ($app) {
+  $app['repository'] = $app['doctrine.odm.mongodb.dm']->getRepository($app['culin.entity']);
+
+  $app['query_builder'] = $app->share(function($app) {
     return $app['doctrine.odm.mongodb.dm']->createQueryBuilder($app['culin.entity']);
+  });
+
+  $app['form'] = $app->share(function($app) {
+    return function($entity = null) use ($app) {
+      return $app['form.factory']->create(new $app['culin.form'](), $entity);
+    };
   });
 
   $app['twig']->addExtension(new CulinExtension($app));
