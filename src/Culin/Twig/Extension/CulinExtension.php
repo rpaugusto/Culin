@@ -21,24 +21,10 @@ class CulinExtension extends \Twig_Extension
   public function getFilters()
   {
     return array(
-      'to_headers' => new \Twig_Filter_Method($this, 'toHeaders'),
-      'to_array'   => new \Twig_Filter_Method($this, 'toArray'),
-      'to_fields'  => new \Twig_Filter_Method($this, 'toFields'),
+      'to_headers' => new \Twig_Filter_Method($this, 'filterToHeaders'),
+      'to_array'   => new \Twig_Filter_Method($this, 'filterToArray'),
+      'to_fields'  => new \Twig_Filter_Method($this, 'filterToFields'),
     );
-  }
-
-  public function getTests()
-  {
-    return array(
-      'link' => new \Twig_Test_Method($this, 'link'),
-    );
-  }
-
-  public function link($field)
-  {
-    $config = $this->getOption('culin.fields', array());
-
-    return isset($config[$field]) && isset($config[$field]['link']) && $config[$field]['link'];
   }
 
   private function getOption($name, $default = null)
@@ -46,17 +32,26 @@ class CulinExtension extends \Twig_Extension
     return isset($this->app[$name]) ? $this->app[$name] : $default;
   }
 
-  public function current($object)
+  public function getTests()
   {
-    return $object->current();
+    return array(
+      'edit_link'  => new \Twig_Test_Method($this, 'testEditLink'),
+    );
   }
 
-  public function toHeaders(\Iterator $object)
+  public function testEditLink($field)
+  {
+    $config = $this->getOption('culin.fields', array());
+
+    return isset($config[$field]) && isset($config[$field]['link']) && $config[$field]['link'];
+  }
+
+  public function filterToHeaders(\Iterator $object)
   {
     $object = clone $object;
     $object->rewind();
 
-    $fields = $this->toFields($object->current());
+    $fields = $this->filterToFields($object->current());
 
     $headers = array();
 
@@ -73,7 +68,7 @@ class CulinExtension extends \Twig_Extension
     return $headers;
   }
 
-  public function toFields($object)
+  public function filterToFields($object)
   {
     $array  = (array) $object;
     $import = array_keys($this->getOption('culin.fields', array_keys($array)));
@@ -81,7 +76,7 @@ class CulinExtension extends \Twig_Extension
     return array_intersect(array_keys($array), $import);
   }
 
-  public function toArray($object)
+  public function filterToArray($object)
   {
     $array  = (array) $object;
     $import = array_keys($this->getOption('culin.fields', array_keys($array)));
