@@ -16,3 +16,6 @@
 [submodule "vendor/Symfony/Component/Translation"]
 	path = vendor/Symfony/Component/Translation
 	url = https://github.com/symfony/Translation.git
+[submodule "vendor/Twig-extensions"]
+	path = vendor/Twig-extensions
+	url = https://github.com/fabpot/Twig-extensions.git
