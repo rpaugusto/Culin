@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 $app = require_once __DIR__.'/bootstrap.php';
 
 /**
- *
+ * Lists entities
  */
 $app->get('/', function() use ($app) {
   $query = $app['query_builder']->limit(20)->getQuery();
@@ -18,7 +18,7 @@ $app->get('/', function() use ($app) {
 })->bind('homepage');
 
 /**
- *
+ * Form to create a new entity
  */
 $app->get('/new', function() use ($app) {
   $form = $app['form']();
@@ -29,7 +29,7 @@ $app->get('/new', function() use ($app) {
 })->bind('new');
 
 /**
- *
+ * Actually creates the entity
  */
 $app->post('/create', function() use ($app) {
   $form = $app['form'](new $app['culin.entity']());
@@ -49,7 +49,9 @@ $app->post('/create', function() use ($app) {
 })->bind('create');
 
 /**
+ * Form to edit an entity
  *
+ * @param mixed $id
  */
 $app->get('/edit/{id}', function($id) use ($app) {
   $entity = $app['repository']->find($id);
@@ -62,7 +64,7 @@ $app->get('/edit/{id}', function($id) use ($app) {
 })->bind('edit');
 
 /**
- *
+ * Actually updates an entity
  */
 $app->post('/update', function() use ($app) {
   $form   = $app['form']();
@@ -85,7 +87,9 @@ $app->post('/update', function() use ($app) {
 })->bind('update');
 
 /**
+ * Deletes an entity
  *
+ * @param mixed $id
  */
 $app->get('/delete/{id}', function($id) use ($app) {
   $entity = $app['repository']->find($id);
