@@ -1,0 +1,3 @@
+[submodule "vendor/silex"]
+	path = vendor/silex
+	url = file:///Users/ash/Projects/Silex-rw
