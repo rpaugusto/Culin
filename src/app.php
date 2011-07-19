@@ -12,4 +12,8 @@ $app->get('/', function() use ($app) {
   ));
 });
 
+$app->get('/edit/{id}', function($id) use ($app) {
+  
+})->bind('edit');
+
 return $app;

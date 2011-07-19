@@ -9,8 +9,14 @@
   <tbody>
   {% for entity in entities %}
   <tr>
-    {% for field in entity|to_array %}
-    <td>{{ field }}</td>
+    {% for field,value in entity|to_array %}
+    <td>
+      {% if field is link %}
+        <a href="{{ path('edit', { "id": entity.id }) }}">{{ value }}</a>
+      {% else %}
+        {{ value }}
+      {% endif %}
+    </td>
     {% endfor %}
   </tr>
   {% endfor %}

@@ -27,6 +27,20 @@ class CulinExtension extends \Twig_Extension
     );
   }
 
+  public function getTests()
+  {
+    return array(
+      'link' => new \Twig_Test_Method($this, 'link'),
+    );
+  }
+
+  public function link($field)
+  {
+    $config = $this->getOption('culin.fields', array());
+
+    return isset($config[$field]) && isset($config[$field]['link']) && $config[$field]['link'];
+  }
+
   private function getOption($name, $default = null)
   {
     return isset($this->app[$name]) ? $this->app[$name] : $default;
@@ -42,13 +56,27 @@ class CulinExtension extends \Twig_Extension
     $object = clone $object;
     $object->rewind();
 
-    return $this->toFields($object->current());
+    $fields = $this->toFields($object->current());
+
+    $headers = array();
+
+    $config = $this->getOption('culin.fields');
+
+    foreach ($fields as $field) {
+      if (isset($config[$field]) && isset($config[$field]['label'])) {
+        $headers[] = $config[$field]['label'] ?: $field;
+      } else {
+        $headers[] = $field;
+      }
+    }
+
+    return $headers;
   }
 
   public function toFields($object)
   {
     $array  = (array) $object;
-    $import = $this->getOption('culin.fields', array_keys($array));
+    $import = array_keys($this->getOption('culin.fields', array_keys($array)));
 
     return array_intersect(array_keys($array), $import);
   }
@@ -56,7 +84,7 @@ class CulinExtension extends \Twig_Extension
   public function toArray($object)
   {
     $array  = (array) $object;
-    $import = $this->getOption('culin.fields', array_keys($array));
+    $import = array_keys($this->getOption('culin.fields', array_keys($array)));
     return array_intersect_key($array, array_combine($import, $import));
   }
 }
