@@ -1,3 +1,18 @@
 [submodule "vendor/silex"]
 	path = vendor/silex
 	url = file:///Users/ash/Projects/Silex-rw
+[submodule "vendor/SilexExtensions"]
+	path = vendor/SilexExtensions
+	url = https://github.com/docteurklein/SilexExtensions.git
+[submodule "vendor/mongodb-odm"]
+	path = vendor/mongodb-odm
+	url = git://github.com/doctrine/mongodb-odm.git
+[submodule "vendor/Symfony/Component/Form"]
+	path = vendor/Symfony/Component/Form
+	url = https://github.com/symfony/Form.git
+[submodule "vendor/Symfony/Bridge/Twig"]
+	path = vendor/Symfony/Bridge/Twig
+	url = https://github.com/symfony/TwigBridge.git
+[submodule "vendor/Symfony/Component/Translation"]
+	path = vendor/Symfony/Component/Translation
+	url = https://github.com/symfony/Translation.git
