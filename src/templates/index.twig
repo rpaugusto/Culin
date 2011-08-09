@@ -3,12 +3,12 @@
 {% block content %}
 <table border="1">
   <thead>
-  </thead>
     <tr>
       {% for field in entities|to_headers %}
       <th>{{ field }}</th>
       {% endfor %}
     </tr>
+  </thead>
   <tbody>
   {% for entity in entities %}
   <tr>
